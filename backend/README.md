@@ -201,17 +201,6 @@ Repeat for other services as needed.
 
 Contributions are welcome! Please fork the repository and submit a pull request with your changes. Ensure that any changes are well-tested and documented.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For any questions or support, please contact:
-
-- **Email:** your-email@example.com
-- **GitHub:** [your-github-profile](https://github.com/your-github-profile)
-
 ```
 
 ### Key Sections:
