@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:20
+FROM node:20.16.0
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 3001
 
 # Define the command to run the app
-CMD ["nodemon", "index.js"]
+CMD ["npx", "nodemon", "index.js"]
+

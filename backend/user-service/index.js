@@ -6,7 +6,7 @@ const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const connectDB = require('./src/config/dbConfig');
 const serverConfig = require('./src/config/serverConfig');
-
+// y1234rtyuiknbvcswertyuikmnbvcser567890plkjnbv
 const app = express();
 
 // Connect to MongoDB

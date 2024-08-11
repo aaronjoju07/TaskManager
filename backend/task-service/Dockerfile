@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 3002
 
 # Define the command to run the app
-CMD ["nodemon", "index.js"]
+CMD ["npx", "nodemon", "index.js"]
+
