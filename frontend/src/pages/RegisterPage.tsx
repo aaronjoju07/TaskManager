@@ -1,25 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Container, FormControl, FormLabel, Input, Stack, Heading, useToast } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
-import { axion } from "axion";
+import axios from 'axios';
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const register = () => {
-    // Replace with actual registration logic
-    console.log('Registering...');
+  // State to hold form values
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-    // Simulate successful registration and redirect
-    navigate('/login'); // Redirect to the home page
-    toast({
-      title: "Registered.",
-      description: "Welcome! Please log in to continue.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+  const register = async () => {
+    if (password !== confirmPassword) {
+      toast({
+        title: "Passwords do not match.",
+        description: "Please make sure your passwords match.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/api/auth/register', {
+        username,
+        password,
+      });
+
+      if (response.status === 200) {
+        navigate('/login');
+        toast({
+          title: "Registered.",
+          description: "Welcome! Please log in to continue.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Registration failed.",
+        description: "There was an error registering your account. Please try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -29,15 +58,32 @@ const RegisterPage: React.FC = () => {
         <Stack spacing={4}>
           <FormControl>
             <FormLabel htmlFor="username">Username</FormLabel>
-            <Input id="username" placeholder="Username" />
+            <Input 
+              id="username" 
+              placeholder="Username" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="password">Password</FormLabel>
-            <Input id="password" type="password" placeholder="Password" />
+            <Input 
+              id="password" 
+              type="password" 
+              placeholder="Password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-            <Input id="confirmPassword" type="password" placeholder="Confirm Password" />
+            <Input 
+              id="confirmPassword" 
+              type="password" 
+              placeholder="Confirm Password" 
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
           </FormControl>
           <Button colorScheme="teal" onClick={register}>
             Register

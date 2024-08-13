@@ -1,45 +1,49 @@
 import React from 'react';
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-} from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Button, IconButton } from "@chakra-ui/react";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons"; // Import icons for completed and not completed states
+import { Task } from '../pages/Home'; // Adjust the import path as needed
 
-const TaskTable: React.FC = () => {
-  // Sample data
-  const tasks = [
-    { task: 'Design UI', assignee: 'Alice', dueDate: '2024-08-15', status: 'In Progress' },
-    { task: 'Develop Backend', assignee: 'Bob', dueDate: '2024-08-20', status: 'Not Started' },
-    { task: 'Write Tests', assignee: 'Charlie', dueDate: '2024-08-22', status: 'Completed' },
-  ];
+interface TaskTableProps {
+  tasks: Task[];
+  token: string | null;
+  onToggleCompletion: (taskId: string, completed: boolean) => void; // New prop for toggling completion
+  onDelete: (taskId: string) => void;
+}
 
+const TaskTable: React.FC<TaskTableProps> = ({ tasks, token, onToggleCompletion, onDelete }) => {
+  
   return (
-    <TableContainer p={6}>
-      <Table variant="simple" p={3}>
-        <Thead>
-          <Tr>
-            <Th>Task</Th>
-            <Th>Assignee</Th>
-            <Th>Due Date</Th>
-            <Th>Status</Th>
+    <Table variant="simple">
+      <Thead>
+        <Tr>
+          <Th>Title</Th>
+          <Th>Description</Th>
+          <Th>Status</Th>
+          <Th>Actions</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {tasks.map((task) => (
+          <Tr key={task.taskId}>
+            <Td>{task.title}</Td>
+            <Td>{task.description}</Td>
+            <Td>
+              <IconButton
+                aria-label={task.completed ? "Mark as Incomplete" : "Mark as Complete"}
+                icon={task.completed ? <CloseIcon /> : <CheckIcon />}
+                colorScheme={task.completed ? "red" : "green"}
+                onClick={() => onToggleCompletion(task.taskId, !task.completed)}
+              />
+            </Td>
+            <Td>
+              <Button colorScheme="red" ml={2} onClick={() => onDelete(task.taskId)}>
+                Delete
+              </Button>
+            </Td>
           </Tr>
-        </Thead>
-        <Tbody>
-          {tasks.map((task, index) => (
-            <Tr key={index}>
-              <Td>{task.task}</Td>
-              <Td>{task.assignee}</Td>
-              <Td>{task.dueDate}</Td>
-              <Td>{task.status}</Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+        ))}
+      </Tbody>
+    </Table>
   );
 };
 

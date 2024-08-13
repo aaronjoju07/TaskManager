@@ -1,24 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Container, FormControl, FormLabel, Input, Stack, Heading, useToast } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const login = () => {
-    // Replace with actual login logic
-    console.log('Logging in...');
+  // State to hold form values
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    // Simulate successful login and redirect
-    navigate('/home'); // Redirect to the home page
-    toast({
-      title: "Logged in.",
-      description: "Welcome back!",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+  const login = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/auth/login', { username, password });
+      if (response.status === 200) {
+        const { token } = response.data; 
+        localStorage.setItem('token', token);
+        navigate('/home');
+        toast({
+          title: "Logged in.",
+          description: `Welcome back!`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Login failed.",
+        description: "Invalid username or password.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -28,11 +45,22 @@ const LoginPage: React.FC = () => {
         <Stack spacing={4}>
           <FormControl>
             <FormLabel htmlFor="username">Username</FormLabel>
-            <Input id="username" placeholder="Username" />
+            <Input 
+              id="username" 
+              placeholder="Username" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="password">Password</FormLabel>
-            <Input id="password" type="password" placeholder="Password" />
+            <Input 
+              id="password" 
+              type="password" 
+              placeholder="Password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </FormControl>
           <Button colorScheme="teal" onClick={login}>
             Login
