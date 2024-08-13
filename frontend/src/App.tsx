@@ -1,9 +1,10 @@
 import {ChakraProvider, } from '@chakra-ui/react'
-import Home from './pages/home'
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import ProjectPage from './pages/Project';
+import Home from './pages/Home';
 
 
 function App() {
